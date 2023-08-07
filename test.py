@@ -1,5 +1,5 @@
-import numpy as np
 import itertools
+import random
 
 # the input boolean_fxn should be a dictionary in the form of 
 # the keys being tuples consisting of +1's and -1's and 
@@ -19,11 +19,12 @@ def multiply_elements_by_indices(input_tuple, indices_list):
     :param indices_list: A list of numbers representing the indices to multiply.
     :return: The result of multiplying the selected elements.
     """
+    print("input_tuple, indices_list: ", input_tuple, indices_list)
     result = 1
     for index in indices_list:
         # Check if the index is within the valid range of the tuple
-        if 0 <= index < len(input_tuple):
-            result *= input_tuple[index]
+        if 0 <= index-1 < len(input_tuple):
+            result *= input_tuple[index-1]
         else:
             print(f"Warning: Index {index} is out of range for the input tuple.")
     return result
@@ -106,30 +107,33 @@ print(expectation)
 
 
 
-def boolean_function_fourier_coeffs(boolean_func_dict, num_terms):
+def boolean_function_fourier_coeffs(boolean_func_dict):
     """
     Computes the coefficients of the Fourier expansion for the given boolean function.
 
     :param boolean_func_dict: A dictionary with tuples of (-1, +1) as keys and boolean function outputs (-1, +1) as values.
-    :param num_terms: The number of Fourier terms to compute (excluding the constant term).
-    :return: A list of coefficients of the Fourier expansion.
+    :return: A dictionary whose keys are the terms of the Fourier expansion and the values are the coefficients.
     """
-    values = [boolean_func_dict[(-1, +1)], boolean_func_dict[(+1, -1)], boolean_func_dict[(-1, -1)], boolean_func_dict[(+1, +1)]]
-    # Compute the Fourier coefficients using DFT
-    fourier_coeffs = np.fft.fft(values)
-    
-    # Take the magnitudes of the coefficients to get the actual Fourier coefficients
-    fourier_coeffs_magnitudes = np.abs(fourier_coeffs)
-    
-    # Keep only the desired number of terms (excluding the constant term)
-    coefficients = fourier_coeffs_magnitudes[:num_terms + 1].tolist()
-    
-    return coefficients
+    all_terms = generate_all_combinations(len(random.choice(list(boolean_func_dict.keys()))))
+    normalization_factor = 1/(len(boolean_func_dict))
+
+    coeff_dict = {}
+    for term in all_terms:
+        if len(term)>0:
+            dot_product = 0
+            for key, value in boolean_func_dict.items():
+                print("key, term, value: ", key, term, value)
+                dot_product += multiply_elements_by_indices(key,term) * value
+            coeff_dict[term] = normalization_factor * dot_product
+        else:
+            coeff_dict[term] = calculate_expectation(boolean_func_dict)
+    return coeff_dict
 
 # Example boolean function represented as a dictionary
-max2_func_dict = {(-1, +1): 1, (+1, -1): 1, (-1, -1): -1, (+1, +1): 1}
+max2_func_dict = {(-1, +1): +1, (+1, -1): +1, (-1, -1): -1, (+1, +1): +1}
 
 
-# coefficients = boolean_function_fourier_coeffs(max2_func_dict)
-# print(coefficients)
+coefficients = boolean_function_fourier_coeffs(max2_func_dict)
+print("COEFFICIENTS!!!")
+print(coefficients)
 
