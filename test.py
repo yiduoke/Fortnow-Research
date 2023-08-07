@@ -1,82 +1,134 @@
 import numpy as np
+import itertools
 
-def boolean_function_to_truth_table(boolean_function):
+# the input boolean_fxn should be a dictionary in the form of 
+# the keys being tuples consisting of +1's and -1's and 
+# and the values being +1 and -1's
+# An example:
+# {(-1, +1): -1, 
+#  (+1, -1): -1, 
+#  (-1, -1): 1, 
+#  (+1, +1): 1}
+# def give_fourier_coefficients(boolean_fxn):
+
+def multiply_elements_by_indices(input_tuple, indices_list):
     """
-    Converts the boolean function in the form of a dictionary to a truth table as a list of tuples.
+    Multiplies the elements in the input tuple whose indices are given in the indices list.
 
-    Args:
-        boolean_function (dict): The boolean function where keys are input assignments and values are Boolean outputs.
-
-    Returns:
-        list: A list of tuples representing the truth table with input assignments and Boolean outputs.
+    :param input_tuple: The input tuple.
+    :param indices_list: A list of natural numbers representing the indices to multiply.
+    :return: The result of multiplying the selected elements.
     """
-    truth_table = list(boolean_function.items())
-    return truth_table
-
-def fourier_coefficients(boolean_function):
-    """
-    Calculates the Fourier coefficients of the Boolean function.
-
-    Args:
-        boolean_function (dict): The boolean function where keys are input assignments and values are Boolean outputs.
-
-    Returns:
-        dict: A dictionary with keys representing the Fourier coefficients and values being their corresponding values.
-    """
-    truth_table = boolean_function_to_truth_table(boolean_function)
-    num_inputs = len(truth_table[0][0])
-    num_outputs = len(truth_table)
-
-    # Initialize the output dictionary to store Fourier coefficients
-    coefficients = {}
-
-    for k in range(num_inputs + 1):
-        for i in range(num_outputs):
-            x = np.array(truth_table[i][0])  # Input assignment as binary array
-            y = truth_table[i][1]  # Boolean output
-            # Calculate the phase of the Fourier coefficient
-            phase = np.prod(np.where(x == -1, -1, 1))  # 1 if all elements of x are 1, -1 if any element is -1
-            # Add the contribution of this output to the coefficient
-            if k in coefficients:
-                coefficients[k] += y * phase
-            else:
-                coefficients[k] = y * phase
-
-    # Normalize the coefficients
-    coefficients = {k: v / num_outputs for k, v in coefficients.items()}
-    return coefficients
-
-def boolean_function_expansion(fourier_coeffs):
-    """
-    Generates the Fourier expansion of the Boolean function from its Fourier coefficients.
-
-    Args:
-        fourier_coeffs (dict): A dictionary with keys representing the Fourier coefficients and values being their corresponding values.
-
-    Returns:
-        str: The Fourier expansion of the Boolean function as a string.
-    """
-    num_inputs = len(next(iter(fourier_coeffs.keys())))
-    expansion = ""
-    for k, coeff in fourier_coeffs.items():
-        if k == 0:
-            expansion += "{:.2f} + ".format(coeff)
+    result = 1
+    for index in indices_list:
+        # Check if the index is within the valid range of the tuple
+        if 0 <= index < len(input_tuple):
+            result *= input_tuple[index]
         else:
-            expansion += "{:.2f} * ".format(coeff)
-            for i in range(num_inputs):
-                expansion += "x{} * ".format(i + 1 if i != num_inputs - 1 else i + 1)
-            expansion = expansion[:-3] + " + "
-    return expansion[:-3]
+            print(f"Warning: Index {index} is out of range for the input tuple.")
+    return result
+
+print (multiply_elements_by_indices((1,1,1,-1),[3]))
+
+# def generate_combinations(n):
+#     """
+#     Generates all combinations of natural numbers no more than the given natural number
+#     in the order of increasing length.
+
+#     :param n: The natural number.
+#     :return: A list containing all combinations of natural numbers.
+#     """
+#     def backtrack(start, path, result):
+#         # Add the current combination to the result list
+#         result.append(path[:])
+
+#         for num in range(start, n + 1):
+#             path.append(num)
+#             backtrack(num + 1, path, result)
+#             path.pop()
+
+#     result = []
+#     backtrack(1, [], result)
+#     return result
+
+# # Example usage:
+# n = 3
+# combinations = generate_combinations(n)
+# print(combinations)
+
+
+
+def generate_combinations(x, y):
+    """
+    Generates all combinations of length x from the numbers [0, 1, ..., y].
+
+    :param x: The length of the combinations.
+    :param y: The maximum number to consider in the combinations.
+    :return: A list containing all combinations of length x.
+    """
+    numbers = list(range(1,y + 1))
+    return list(itertools.combinations(numbers, x))
 
 # Example usage:
-if __name__ == "__main__":
-    boolean_function = {
-        (1, 1): 1,
-        (-1, 1): 1,
-        (1, -1): 1,
-        (-1, -1): -1
-    }
+x = 2
+y = 3
+combinations = generate_combinations(x, y)
+print(combinations)
 
-    fourier_coeffs = fourier_coefficients(boolean_function)
-    fourier_expansion = boolean_function_expansion(fourier_coeffs)
-    print("Fourier expansion: " + fourier_expansion)
+def concatenate_lists_of_tuples(list_of_lists):
+    """
+    Concatenates a list of lists of tuples into a single big list.
+
+    :param list_of_lists: The list of lists of tuples.
+    :return: A single list containing all the tuples from the input lists.
+    """
+    return [item for sublist in list_of_lists for item in sublist]
+
+# Example usage:
+list_of_lists = [[(1, 2), (3, 4)], [(5, 6), (7, 8)], [(9, 10)]]
+result = concatenate_lists_of_tuples(list_of_lists)
+print(result)
+
+
+def generate_all_combinations(y):
+    big_list = []
+    for i in range(y+1):
+        big_list += generate_combinations(i,y)
+    return big_list
+
+
+
+# Example usage:
+n = 4
+combinations = generate_all_combinations(n)
+print("combinations of {}!".format(n), combinations)
+
+
+
+def boolean_function_fourier_coeffs(boolean_func_dict, num_terms):
+    """
+    Computes the coefficients of the Fourier expansion for the given boolean function.
+
+    :param boolean_func_dict: A dictionary with tuples of (-1, +1) as keys and boolean function outputs (-1, +1) as values.
+    :param num_terms: The number of Fourier terms to compute (excluding the constant term).
+    :return: A list of coefficients of the Fourier expansion.
+    """
+    values = [boolean_func_dict[(-1, +1)], boolean_func_dict[(+1, -1)], boolean_func_dict[(-1, -1)], boolean_func_dict[(+1, +1)]]
+    # Compute the Fourier coefficients using DFT
+    fourier_coeffs = np.fft.fft(values)
+    
+    # Take the magnitudes of the coefficients to get the actual Fourier coefficients
+    fourier_coeffs_magnitudes = np.abs(fourier_coeffs)
+    
+    # Keep only the desired number of terms (excluding the constant term)
+    coefficients = fourier_coeffs_magnitudes[:num_terms + 1].tolist()
+    
+    return coefficients
+
+# Example boolean function represented as a dictionary
+max2_func_dict = {(-1, +1): 1, (+1, -1): 1, (-1, -1): -1, (+1, +1): 1}
+
+
+# coefficients = boolean_function_fourier_coeffs(max2_func_dict)
+# print(coefficients)
+
