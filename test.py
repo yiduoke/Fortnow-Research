@@ -16,7 +16,7 @@ def multiply_elements_by_indices(input_tuple, indices_list):
     Multiplies the elements in the input tuple whose indices are given in the indices list.
 
     :param input_tuple: The input tuple.
-    :param indices_list: A list of natural numbers representing the indices to multiply.
+    :param indices_list: A list of numbers representing the indices to multiply.
     :return: The result of multiplying the selected elements.
     """
     result = 1
@@ -30,33 +30,6 @@ def multiply_elements_by_indices(input_tuple, indices_list):
 
 print (multiply_elements_by_indices((1,1,1,-1),[3]))
 
-# def generate_combinations(n):
-#     """
-#     Generates all combinations of natural numbers no more than the given natural number
-#     in the order of increasing length.
-
-#     :param n: The natural number.
-#     :return: A list containing all combinations of natural numbers.
-#     """
-#     def backtrack(start, path, result):
-#         # Add the current combination to the result list
-#         result.append(path[:])
-
-#         for num in range(start, n + 1):
-#             path.append(num)
-#             backtrack(num + 1, path, result)
-#             path.pop()
-
-#     result = []
-#     backtrack(1, [], result)
-#     return result
-
-# # Example usage:
-# n = 3
-# combinations = generate_combinations(n)
-# print(combinations)
-
-
 
 def generate_combinations(x, y):
     """
@@ -64,7 +37,7 @@ def generate_combinations(x, y):
 
     :param x: The length of the combinations.
     :param y: The maximum number to consider in the combinations.
-    :return: A list containing all combinations of length x.
+    :return: A list containing all combinations of length x in the from of tuples.
     """
     numbers = list(range(1,y + 1))
     return list(itertools.combinations(numbers, x))
@@ -91,6 +64,13 @@ print(result)
 
 
 def generate_all_combinations(y):
+    """
+    Generates all combinations of natural numbers no more than the given natural number
+    in the order of increasing length.
+
+    :param n: The natural number.
+    :return: A list containing all combinations of natural numbers in the form of tuples.
+    """
     big_list = []
     for i in range(y+1):
         big_list += generate_combinations(i,y)
@@ -102,6 +82,27 @@ def generate_all_combinations(y):
 n = 4
 combinations = generate_all_combinations(n)
 print("combinations of {}!".format(n), combinations)
+
+
+def calculate_expectation(dictionary):
+    """
+    Calculates the expectation (average) of all the values in the dictionary.
+
+    :param dictionary: The input dictionary with numerical values.
+    :return: The expectation of all the values in the dictionary.
+    """
+    if not dictionary:
+        return None
+
+    total_sum = sum(dictionary.values())
+    num_entries = len(dictionary)
+    return total_sum / num_entries
+
+# Example usage:
+input_dict = {'a': 1, 'b': -1, 'c': -1}
+expectation = calculate_expectation(input_dict)
+print(expectation)
+
 
 
 
