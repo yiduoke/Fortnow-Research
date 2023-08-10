@@ -137,3 +137,53 @@ coefficients = boolean_function_fourier_coeffs(max2_func_dict)
 print("COEFFICIENTS!!!")
 print(coefficients)
 
+
+def generate_binary_strings(length):
+    """
+    Generates all binary numbers of the given length.
+
+    :param length: The length of the binary strings.
+    :return: A list containing all binary strings of the given length as tuples.
+    """
+    if length <= 0:
+        return []
+
+    def backtrack(path, result):
+        if len(path) == length:
+            result.append(tuple(path))
+            return
+
+        path.append(0)
+        backtrack(path, result)
+        path.pop()
+
+        path.append(1)
+        backtrack(path, result)
+        path.pop()
+
+    result = []
+    backtrack([], result)
+    return result
+
+# Example usage:
+length = 3
+binary_strings = generate_binary_strings(length)
+print(binary_strings)
+
+
+def binary_tuple_to_decimal(binary_tuple):
+    """
+    Converts a binary tuple to its corresponding decimal representation.
+
+    :param binary_tuple: The input binary tuple.
+    :return: The decimal number corresponding to the binary tuple.
+    """
+    binary_str = ''.join(map(str, binary_tuple))
+    return int(binary_str, 2)
+
+# Example usage:
+binary_input = (1, 1, 0)
+decimal_output = binary_tuple_to_decimal(binary_input)
+print(decimal_output)
+
+
