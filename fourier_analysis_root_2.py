@@ -195,6 +195,21 @@ binary_input = (1, 1, 0, 1, 0)
 modified_tuple = replace_zeros_with_minus_ones(binary_input)
 # print(modified_tuple)
 
+def sum_squared_vars_longer_than_t(t, input_dict):
+    result = 0
+    for key in input_dict.keys():
+        if len(key) > t:
+            print("line 202: ", input_dict[key] ** 2)
+            result += input_dict[key] ** 2
+    return result
+
+# Example dictionary
+data_dict = {('apple', 'banana'): 3, ('cherry', 'date', 'elderberry'): 5, ('fig', 'grape', 'honeydew', 'kiwi'): 2}
+
+# Calculate sum of squares of values with keys longer than t
+t_value = 2
+total_sum = sum_squared_vars_longer_than_t(t_value, data_dict)
+print(f"Sum of squares of values with keys longer than {t_value}: {total_sum}")
 
 
 #####################################################
@@ -257,6 +272,10 @@ for i in generate_binary_strings(length_bin):
         sqrt_boolean_fxn[replace_zeros_with_minus_ones(boolean_input)] = nth_digit_of_sqrt_two(binary_tuple_to_decimal(boolean_input))
 print("boolean fxn of sqrt 2 at length {length_bin}}: ", sqrt_boolean_fxn)
 print("sqrt 2 fourier expansion:", boolean_function_fourier_coeffs(sqrt_boolean_fxn))
+
+print("test of max2: ", sum_squared_vars_longer_than_t(-1, boolean_function_fourier_coeffs(majority3_function_dict)))
+# def lemma7(t,M,d,fourier_expansion):
+#     for 
 
 
 # need to do tests that the lemma works on these small fxns, then test on root 2
