@@ -11,14 +11,15 @@ def nth_digit_of_sqrt_two(i):
     decimal.getcontext().prec = i + 1
     sqrt_two = decimal.Decimal(2).sqrt()
     
+    j = i-1
     # Convert the square root to a binary string
-    binary_str = bin(int(sqrt_two * (2 ** i)))[2:]
+    binary_str = bin(int(sqrt_two * (2 ** j)))[2:]
     
     # Pad the binary string with leading zeros if necessary
-    binary_str = binary_str.zfill(i)
+    binary_str = binary_str.zfill(j)
     
     # Return the i-th digit
-    return int(binary_str[i])
+    return int(binary_str[j])
 
 sqrt_2 = "101101010000010011110"
 for i in range(1,20):
@@ -202,6 +203,7 @@ def boolean_function_fourier_coeffs(boolean_func_dict):
             coeff_dict[term] = calculate_expectation(boolean_func_dict)
     return coeff_dict
 
+
 # Example boolean function represented as a dictionary
 max2_func_dict = {
     (-1, +1): +1, 
@@ -231,8 +233,11 @@ print("COEFFICIENTS!!!")
 print(maj3_coefficients)
 
 length_bin = 10
-for i in generate_binary_strings(length_bin):
-    sqrt_boolean_fxn = {}
-    for boolean_input in generate_binary_strings(length_bin):
-        sqrt_boolean_fxn[replace_zeros_with_minus_ones(boolean_input)] = nth_digit_of_sqrt_two(binary_tuple_to_decimal(boolean_input))
-    print(boolean_function_fourier_coeffs(sqrt_boolean_fxn))
+# for i in generate_binary_strings(length_bin):
+#     sqrt_boolean_fxn = {}
+#     for boolean_input in generate_binary_strings(length_bin):
+#         sqrt_boolean_fxn[replace_zeros_with_minus_ones(boolean_input)] = nth_digit_of_sqrt_two(binary_tuple_to_decimal(boolean_input))
+#     print(boolean_function_fourier_coeffs(sqrt_boolean_fxn))
+
+
+# need to do tests that the lemma works on these small fxns, then test on root 2
