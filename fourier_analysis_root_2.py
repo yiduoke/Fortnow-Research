@@ -2,6 +2,24 @@ import decimal
 import itertools
 import random
 
+def convert_zero_neg_one(input_number):
+    if input_number == 0:
+        return -1
+    elif input_number == 1:
+        return 1
+    else:
+        raise ValueError("Input must be either 0 or 1")
+
+# Test cases
+# input_value = 0
+# output = convert_zero_neg_one(input_value)
+# print(f"Input: {input_value}, Output: {output}")
+
+# input_value = 1
+# output = convert_zero_neg_one(input_value)
+# print(f"Input: {input_value}, Output: {output}")
+
+
 def nth_digit_of_sqrt_two(i):
     if i < 0:
         raise ValueError("The input must be a positive decimal number.")
@@ -11,19 +29,18 @@ def nth_digit_of_sqrt_two(i):
     decimal.getcontext().prec = i + 1
     sqrt_two = decimal.Decimal(2).sqrt()
     
-    j = i-1
     # Convert the square root to a binary string
-    binary_str = bin(int(sqrt_two * (2 ** j)))[2:]
+    binary_str = bin(int(sqrt_two * (2 ** i)))[2:]
     
     # Pad the binary string with leading zeros if necessary
-    binary_str = binary_str.zfill(j)
+    binary_str = binary_str.zfill(i)
     
     # Return the i-th digit
-    return int(binary_str[j])
+    return convert_zero_neg_one(int(binary_str[i]))
 
 sqrt_2 = "101101010000010011110"
-for i in range(1,20):
-    print(i,nth_digit_of_sqrt_two(i), sqrt_2[i-1])
+for i in range(0,20):
+    print(i,nth_digit_of_sqrt_two(i), convert_zero_neg_one(int(sqrt_2[i])))
 
 
 #################################################################################
@@ -94,7 +111,7 @@ def generate_all_combinations(y):
 # Example usage:
 n = 4
 combinations = generate_all_combinations(n)
-print("combinations of {}!".format(n), combinations)
+# print("combinations of {}!".format(n), combinations)
 
 
 def calculate_expectation(dictionary):
@@ -146,7 +163,7 @@ def generate_binary_strings(length):
 # Example usage:
 length = 3
 binary_strings = generate_binary_strings(length)
-print(binary_strings)
+# print(binary_strings)
 
 
 def binary_tuple_to_decimal(binary_tuple):
@@ -162,7 +179,7 @@ def binary_tuple_to_decimal(binary_tuple):
 # Example usage:
 binary_input = (1, 1, 0)
 decimal_output = binary_tuple_to_decimal(binary_input)
-print(decimal_output)
+# print(decimal_output)
 
 def replace_zeros_with_minus_ones(binary_tuple):
     """
@@ -176,7 +193,7 @@ def replace_zeros_with_minus_ones(binary_tuple):
 # Example usage:
 binary_input = (1, 1, 0, 1, 0)
 modified_tuple = replace_zeros_with_minus_ones(binary_input)
-print(modified_tuple)
+# print(modified_tuple)
 
 
 
@@ -213,8 +230,8 @@ max2_func_dict = {
 
 
 max2_coefficients = boolean_function_fourier_coeffs(max2_func_dict)
-print("COEFFICIENTS!!!")
-print(max2_coefficients)
+# print("COEFFICIENTS OF MAX2!!!")
+# print(max2_coefficients)
 
 majority3_function_dict = {
     (-1, -1, -1): -1,
@@ -229,15 +246,17 @@ majority3_function_dict = {
 }
 
 maj3_coefficients = boolean_function_fourier_coeffs(majority3_function_dict)
-print("COEFFICIENTS!!!")
-print(maj3_coefficients)
+# print("COEFFICIENTS OF MAJ3!!!")
+# print(maj3_coefficients)
 
-length_bin = 10
-# for i in generate_binary_strings(length_bin):
-#     sqrt_boolean_fxn = {}
-#     for boolean_input in generate_binary_strings(length_bin):
-#         sqrt_boolean_fxn[replace_zeros_with_minus_ones(boolean_input)] = nth_digit_of_sqrt_two(binary_tuple_to_decimal(boolean_input))
-#     print(boolean_function_fourier_coeffs(sqrt_boolean_fxn))
+length_bin = 2
+
+sqrt_boolean_fxn = {}
+for i in generate_binary_strings(length_bin):
+    for boolean_input in generate_binary_strings(length_bin):
+        sqrt_boolean_fxn[replace_zeros_with_minus_ones(boolean_input)] = nth_digit_of_sqrt_two(binary_tuple_to_decimal(boolean_input))
+print("boolean fxn of sqrt 2 at length {length_bin}}: ", sqrt_boolean_fxn)
+print("sqrt 2 fourier expansion:", boolean_function_fourier_coeffs(sqrt_boolean_fxn))
 
 
 # need to do tests that the lemma works on these small fxns, then test on root 2
