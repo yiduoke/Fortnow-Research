@@ -20,6 +20,7 @@ def convert_zero_neg_one(input_number):
 # print(f"Input: {input_value}, Output: {output}")
 
 
+
 def nth_digit_of_sqrt_two(i):
     if i < 0:
         raise ValueError("The input must be a positive decimal number.")
