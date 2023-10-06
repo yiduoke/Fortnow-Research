@@ -72,7 +72,7 @@ def multiply_elements_by_indices(input_tuple, indices_list):
             print(f"Warning: Index {index} is out of range for the input tuple.")
     return result
 
-print(multiply_elements_by_indices((1,1,1,-1),[3]))
+# print(multiply_elements_by_indices((1,1,1,-1),[3]))
 
 
 def generate_combinations(x, y):
@@ -87,10 +87,10 @@ def generate_combinations(x, y):
     return list(itertools.combinations(numbers, x))
 
 # Example usage:
-x = 2
-y = 3
+x = 3
+y = 6
 combinations = generate_combinations(x, y)
-print(combinations)
+# print("generate_combinations: ", combinations)
 
 
 def generate_all_combinations(y):
@@ -131,7 +131,7 @@ def calculate_expectation(dictionary):
 # Example usage:
 input_dict = {'a': 1, 'b': -1, 'c': -1}
 expectation = calculate_expectation(input_dict)
-print(expectation)
+# print(expectation)
 
 def generate_binary_strings(length):
     """
@@ -195,12 +195,11 @@ binary_input = (1, 1, 0, 1, 0)
 modified_tuple = replace_zeros_with_minus_ones(binary_input)
 # print(modified_tuple)
 
-def sum_squared_vars_longer_than_t(t, input_dict):
+def sum_squared_vars_longer_than_t(t, boolean_fxn_dict):
     result = 0
-    for key in input_dict.keys():
+    for key in boolean_fxn_dict.keys():
         if len(key) > t:
-            print("line 202: ", input_dict[key] ** 2)
-            result += input_dict[key] ** 2
+            result += boolean_fxn_dict[key] ** 2
     return result
 
 # Example dictionary
@@ -236,6 +235,61 @@ def boolean_function_fourier_coeffs(boolean_func_dict):
     return coeff_dict
 
 
+def logical_or_of_numbers(numbers):
+    result = False  # Initialize result as False
+    for num in numbers:
+        if num == 1:
+            result = True
+            break  # Once we find a 1, the result is True, no need to check the rest
+    return result
+
+# Test cases
+input_numbers = (0, 1, 0, 1)
+result = logical_or_of_numbers(input_numbers)
+# print(f"Logical OR of {input_numbers}: {result}")
+
+input_numbers = [0, 0, 0, 0]
+result = logical_or_of_numbers(input_numbers)
+# print(f"Logical OR of {input_numbers}: {result}")
+
+
+def convert_boolean_to_number(boolean_value):
+    if boolean_value:
+        return 1
+    else:
+        return -1
+
+# Test cases
+true_value = True
+converted_value = convert_boolean_to_number(true_value)
+# print(f"Converted value of True: {converted_value}")
+
+false_value = False
+converted_value = convert_boolean_to_number(false_value)
+print(f"Converted value of False: {converted_value}")
+
+
+def or_fxn_dict(n):
+    fxn_dict = {} 
+    for bin_string in generate_binary_strings(n):
+        fxn_dict[replace_zeros_with_minus_ones(bin_string)] = convert_boolean_to_number(logical_or_of_numbers(bin_string))
+    return fxn_dict
+
+n = 3
+
+
+def random_fxn_dict(n):
+    fxn_dict = {} 
+    for bin_string in generate_binary_strings(n):
+        fxn_dict[replace_zeros_with_minus_ones(bin_string)] = random.choice([1, -1])
+    return fxn_dict
+
+
+
+# print("OR FUNCTION dictionary for binary strings of length {n}: ", or_fxn_dict(n))
+# print("RANDOM fxn dictionary for binary strings of length {n}: ", random_fxn_dict(n))
+    
+
 # Example boolean function represented as a dictionary
 max2_func_dict = {
     (-1, +1): +1, 
@@ -264,18 +318,34 @@ maj3_coefficients = boolean_function_fourier_coeffs(majority3_function_dict)
 # print("COEFFICIENTS OF MAJ3!!!")
 # print(maj3_coefficients)
 
-length_bin = 2
 
-sqrt_boolean_fxn = {}
-for i in generate_binary_strings(length_bin):
-    for boolean_input in generate_binary_strings(length_bin):
-        sqrt_boolean_fxn[replace_zeros_with_minus_ones(boolean_input)] = nth_digit_of_sqrt_two(binary_tuple_to_decimal(boolean_input))
-print("boolean fxn of sqrt 2 at length {length_bin}}: ", sqrt_boolean_fxn)
-print("sqrt 2 fourier expansion:", boolean_function_fourier_coeffs(sqrt_boolean_fxn))
+def sqrt2_fxn_dict(n):
+    fxn_dict = {}
+    for bin_string in generate_binary_strings(n):
+        fxn_dict[replace_zeros_with_minus_ones(bin_string)] = nth_digit_of_sqrt_two(binary_tuple_to_decimal(bin_string))
+    return fxn_dict
 
-print("test of max2: ", sum_squared_vars_longer_than_t(-1, boolean_function_fourier_coeffs(majority3_function_dict)))
-# def lemma7(t,M,d,fourier_expansion):
-#     for 
+print("boolean fxn of sqrt 2 at length {length_bin}: ", sqrt2_fxn_dict(4))
+print("sqrt 2 fourier expansion:", boolean_function_fourier_coeffs(sqrt2_fxn_dict(4)))
 
+# print("test of max2 (should be 1): ", sum_squared_vars_longer_than_t(-1, boolean_function_fourier_coeffs(majority3_function_dict)))
+
+def lemma7(t,M,d,fourier_expansion):
+    left_side = sum_squared_vars_longer_than_t(t,fourier_expansion)
+    print("left side numbers: ", left_side)
+    right_side = 2 * M * (2 ** ((-t**(1/d))/20))
+    return right_side < left_side
+    
+def t_and_left_side_dict(fourier_expansion, biggest_t):
+    dict = {}
+    for t in range(0,biggest_t):
+        left_side = sum_squared_vars_longer_than_t(t,fourier_expansion)
+        dict[t] = left_side
+    return dict
+
+print(t_and_left_side_dict(boolean_function_fourier_coeffs(sqrt2_fxn_dict(5)),5))
+
+# lemma7(6,length_bin,2,boolean_function_fourier_coeffs(sqrt_boolean_fxn)) ## size of circuit M should be some polynomial of input size
+# lemma7(0,3,2,boolean_function_fourier_coeffs(random_fxn_dict(9)))
 
 # need to do tests that the lemma works on these small fxns, then test on root 2
