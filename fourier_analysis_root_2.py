@@ -1,6 +1,8 @@
 import decimal
 import itertools
 import random
+# from re import T
+import matplotlib.pylab as plt
 
 def convert_zero_neg_one(input_number):
     if input_number == 0:
@@ -39,9 +41,9 @@ def nth_digit_of_sqrt_two(i):
     # Return the i-th digit
     return convert_zero_neg_one(int(binary_str[i]))
 
-sqrt_2 = "101101010000010011110"
-for i in range(0,20):
-    print(i,nth_digit_of_sqrt_two(i), convert_zero_neg_one(int(sqrt_2[i])))
+# sqrt_2 = "101101010000010011110"
+# for i in range(0,20):
+#     print(i,nth_digit_of_sqrt_two(i), convert_zero_neg_one(int(sqrt_2[i])))
 
 
 #################################################################################
@@ -209,7 +211,7 @@ data_dict = {('apple', 'banana'): 3, ('cherry', 'date', 'elderberry'): 5, ('fig'
 # Calculate sum of squares of values with keys longer than t
 t_value = 2
 total_sum = sum_squared_vars_longer_than_t(t_value, data_dict)
-print(f"Sum of squares of values with keys longer than {t_value}: {total_sum}")
+# print(f"Sum of squares of values with keys longer than {t_value}: {total_sum}")
 
 
 #####################################################
@@ -267,7 +269,7 @@ converted_value = convert_boolean_to_number(true_value)
 
 false_value = False
 converted_value = convert_boolean_to_number(false_value)
-print(f"Converted value of False: {converted_value}")
+# print(f"Converted value of False: {converted_value}")
 
 
 def or_fxn_dict(n):
@@ -290,7 +292,7 @@ def random_fxn_dict(n):
 # print("OR FUNCTION dictionary for binary strings of length {n}: ", or_fxn_dict(n))
 # print("RANDOM fxn dictionary for binary strings of length {n}: ", random_fxn_dict(n))
     
-
+# parity, parity square, majority, threshold function as a real number
 # Example boolean function represented as a dictionary
 max2_func_dict = {
     (-1, +1): +1, 
@@ -326,8 +328,8 @@ def sqrt2_fxn_dict(n):
         fxn_dict[replace_zeros_with_minus_ones(bin_string)] = nth_digit_of_sqrt_two(binary_tuple_to_decimal(bin_string))
     return fxn_dict
 
-print("boolean fxn of sqrt 2 at length {length_bin}: ", sqrt2_fxn_dict(4))
-print("sqrt 2 fourier expansion:", boolean_function_fourier_coeffs(sqrt2_fxn_dict(4)))
+# print("boolean fxn of sqrt 2 at length {length_bin}: ".format(sqrt2_fxn_dict(4)))
+# print("sqrt 2 fourier expansion:", boolean_function_fourier_coeffs(sqrt2_fxn_dict(4)))
 
 # print("test of max2 (should be 1): ", sum_squared_vars_longer_than_t(-1, boolean_function_fourier_coeffs(majority3_function_dict)))
 
@@ -339,14 +341,24 @@ def lemma7(t,M,d,fourier_expansion):
     
 def t_and_left_side_dict(fourier_expansion, biggest_t):
     dict = {}
-    for t in range(0,biggest_t):
+    for t in range(-1,biggest_t):
         left_side = sum_squared_vars_longer_than_t(t,fourier_expansion)
         dict[t] = left_side
     return dict
 
-print(t_and_left_side_dict(boolean_function_fourier_coeffs(sqrt2_fxn_dict(5)),5))
+
+# print(t_and_left_side_dict(boolean_function_fourier_coeffs(random_fxn_dict(15)),15))
+# sqrt2_dict = t_and_left_side_dict(boolean_function_fourier_coeffs(random_fxn_dict(15)),15)
+sqrt2_dict = t_and_left_side_dict(boolean_function_fourier_coeffs(or_fxn_dict(9)),9)
+lists = sorted(sqrt2_dict.items()) # sorted by key, return a list of tuples
+
+x, y = zip(*lists) # unpack a list of pairs into two tuples
+
+plt.plot(x, y)
+plt.show()
+# print(t_and_left_side_dict(boolean_function_fourier_coeffs(sqrt2_fxn_dict(12)),12))
+
+
 
 # lemma7(6,length_bin,2,boolean_function_fourier_coeffs(sqrt_boolean_fxn)) ## size of circuit M should be some polynomial of input size
 # lemma7(0,3,2,boolean_function_fourier_coeffs(random_fxn_dict(9)))
-
-# need to do tests that the lemma works on these small fxns, then test on root 2
