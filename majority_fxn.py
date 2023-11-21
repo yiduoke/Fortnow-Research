@@ -67,6 +67,22 @@ decimal_num = 5
 binary_str = decimal_to_binary(decimal_num)
 print(binary_str)  # Output: "101010"
 
+def insert_dot(x):
+    # Check if the string has at least two characters
+    if len(x) < 2:
+        return x  # Return the original string if it has less than two characters
+
+    # Insert a "." between the first and second characters
+    result_string = x[:1] + '.' + x[1:]
+    return result_string
+
+# Example usage:
+input_string = "example"
+result = insert_dot(input_string)
+
+print(f"String with dot inserted: {result}")
+
+
 def process_string(x):
     # Find the index of the dot
     dot_index = x.find('.')
@@ -104,26 +120,22 @@ def majority_sequence(until_x):
     sequence_string = ""
     num_digits = count_binary_digits(until_x)
     for number in range(until_x):
-        # print(number)
-        # print(binary_padding(number, num_digits))
-        # print(more_ones_than_zeros(binary_padding(number, num_digits)))
-        # print()
 
         sequence_string += str(more_ones_than_zeros(binary_padding(number, num_digits)))
-    return sequence_string
 
-binary_sequence = majority_sequence(2**20-1)
-# print(binary_sequence)
+    sequence_string = insert_dot(sequence_string)
+    decimal_form = floating_bin_to_dec(sequence_string)
+    return sequence_string, decimal_form
 
-# TODO: put in increasingly larger numbers for majority_sequence()
+binary_sequence, dec_form = majority_sequence(2**3-1)
+print(binary_sequence)
+print(dec_form)
+# print(floating_bin_to_dec(binary_sequence))
 
-# math library arbitrary decision
+# def is_there_convergence(power_of_two):
+#     lst = []
+#     for power in range(power_of_two):
 
-
-binary_str = "000000000000000000000000000000010000000000000001000000010001011100000000000000010000000100010111000000010001011100010111011111110000000000000001000000010001011100000001000101110001011101111111000000010001011100010111011111110001011101111111011111111111111100000000000000010000000100010111000000010001"
-# print(int(binary_sequence,2)/(2**(2**10)))
-
-# Convert the binary string to decimal
 
 
 
