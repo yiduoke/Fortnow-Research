@@ -103,8 +103,8 @@ def process_string(x):
 input_string = "example.input"
 result_string, num_chars_after_dot = process_string(input_string)
 
-print(f"String without the dot: {result_string}")
-print(f"Number of characters after the dot: {num_chars_after_dot}")
+# print(f"String without the dot: {result_string}")
+# print(f"Number of characters after the dot: {num_chars_after_dot}")
 
 
 def floating_bin_to_dec(floating_bin):
@@ -113,28 +113,32 @@ def floating_bin_to_dec(floating_bin):
     return decimal_without_dot / 2 ** num_digits_after_dot
 
 floating_bin = "110.01"
-print(f"the binary number 0.11001 in decimal is {floating_bin_to_dec(floating_bin)}")
+# print(f"the binary number 0.11001 in decimal is {floating_bin_to_dec(floating_bin)}")
 
 
 def majority_sequence(until_x):
     sequence_string = ""
     num_digits = count_binary_digits(until_x)
     for number in range(until_x):
-
         sequence_string += str(more_ones_than_zeros(binary_padding(number, num_digits)))
 
     sequence_string = insert_dot(sequence_string)
     decimal_form = floating_bin_to_dec(sequence_string)
     return sequence_string, decimal_form
 
-binary_sequence, dec_form = majority_sequence(2**3-1)
-print(binary_sequence)
-print(dec_form)
+binary_sequence, dec_form = majority_sequence(2**8-1)
+# print(binary_sequence)
+# print(dec_form)
 # print(floating_bin_to_dec(binary_sequence))
 
-# def is_there_convergence(power_of_two):
-#     lst = []
-#     for power in range(power_of_two):
+def is_there_convergence(power_of_two):
+    lst = []
+    for power in range(1, power_of_two):
+        bin_form, dec_form = majority_sequence(2**power-1)
+        lst.append(dec_form)
+    return lst
+
+print(is_there_convergence(25))
 
 
 
