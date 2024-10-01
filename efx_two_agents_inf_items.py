@@ -17,8 +17,8 @@ def generate_item_utilities(n_items):
   """
   item_utilities = {}
   for i in range(n_items):
-      utility_agent1 = random.randint(1, 100)
-      utility_agent2 = random.randint(1, 100)
+      utility_agent1 = random.randint(1, n_items * 4)
+      utility_agent2 = random.randint(1, n_items * 4)
       item_utilities[i] = (utility_agent1, utility_agent2)
   return item_utilities
 
@@ -45,7 +45,7 @@ def efx_condition(agent1, agent2, item_utilities):
     u1_S2_minus_least = total_agent1_view_of_agent2 - item_utilities[least_favorite_item_for_agent1][0]
     
     if agent1.total_utility < u1_S2_minus_least:
-        return False
+      return False
 
   # Agent 2's envy check: calculate Agent 2's utility for Agent 1's bundle
   if agent1.items:
@@ -54,7 +54,7 @@ def efx_condition(agent1, agent2, item_utilities):
     u2_S1_minus_least = total_agent2_view_of_agent1 - item_utilities[least_favorite_item_for_agent2][1]
 
     if agent2.total_utility < u2_S1_minus_least:
-        return False
+      return False
 
   return True
 
@@ -79,12 +79,16 @@ def efx_allocation(n_iterations):
   # Utility table for displaying at the end
   utility_table = []
 
+  num_deferred = 0
   for iteration in range(n_iterations):
     print(f"Iteration {iteration}")
 
     # Items output by the Turing machines
     item1 = agent1_items[iteration]
     item2 = agent2_items[iteration]
+
+    print(f"TM1 released {item1}")
+    print(f"TM2 released {item2}")
 
     # Add to utility table
     utility_table.append({
@@ -112,6 +116,7 @@ def efx_allocation(n_iterations):
         else:
             deferred_items.append(item1)
             print(f"Deferred {item1}")
+            num_deferred += 1
 
     # Try to allocate item2
     if item2 not in allocated_items:
@@ -128,6 +133,7 @@ def efx_allocation(n_iterations):
         else:
             deferred_items.append(item2)
             print(f"Deferred {item2}")
+            num_deferred += 1
 
     # Output current allocation for both agents
     print(f"{agent1.name} Items: {agent1.items}, Total Utility: {agent1.total_utility}")
@@ -141,5 +147,7 @@ def efx_allocation(n_iterations):
   table = [[row[h] for h in headers] for row in utility_table]
   print(tabulate(table, headers=headers, tablefmt='pretty'))
 
+  print(f"\nNumber of times we deferred: {num_deferred}")
+  print(f"Number of unallocated items: {n_iterations - len(allocated_items)}\n")
 # Run the allocation simulation
-efx_allocation(5)
+efx_allocation(2000)
