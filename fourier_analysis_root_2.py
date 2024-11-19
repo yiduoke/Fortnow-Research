@@ -41,11 +41,114 @@ def nth_digit_of_sqrt_two(i):
     # Return the i-th digit
     return convert_zero_neg_one(int(binary_str[i]))
 
+
 # sqrt_2 = "101101010000010011110"
 # for i in range(0,20):
 #     print(i,nth_digit_of_sqrt_two(i), convert_zero_neg_one(int(sqrt_2[i])))
 
 
+def nth_digit_of_sqrt_n(i,n):
+    if i < 0:
+        raise ValueError("The input must be a positive decimal number.")
+        
+    
+    # Calculate the square root of n with arbitrary precision
+    decimal.getcontext().prec = i + 1
+    sqrt_n = decimal.Decimal(n).sqrt()
+    
+    # Convert the square root to a binary string
+    binary_str = bin(int(sqrt_n * (2 ** i)))[2:]
+    
+    # Pad the binary string with leading zeros if necessary
+    binary_str = binary_str.zfill(i)
+    
+    # Return the i-th digit
+    # return convert_zero_neg_one(int(binary_str[i]))
+    return int(binary_str[i])
+
+
+# sqrt_3 = "1.10110101110000101000"
+# for i in range(0,20):
+#     print(i,nth_digit_of_sqrt_n(i,3))
+
+def binary_xor(x, y):
+    # Ensure the input strings are of the same length
+    max_len = max(len(x), len(y))
+    x = x.zfill(max_len)
+    y = y.zfill(max_len)
+
+    # Perform XOR operation element-wise
+    result = ""
+    for i in range(max_len):
+        result += str(int(x[i]) ^ int(y[i]))
+    
+    return result
+
+# Example usage:
+x_binary = "1101"
+y_binary = "1010"
+result = binary_xor(x_binary, y_binary)
+print(f"The XOR of {x_binary} and {y_binary} is: {result}")
+
+
+def binary_and(x, y):
+    # Ensure the input strings are of the same length
+    max_len = max(len(x), len(y))
+    x = x.zfill(max_len)
+    y = y.zfill(max_len)
+
+    # Perform AND operation element-wise
+    result = ""
+    for i in range(max_len):
+        result += str(int(x[i]) & int(y[i]))
+    
+    return result
+
+# Example usage:
+x_binary = "1101"
+y_binary = "1010"
+result = binary_and(x_binary, y_binary)
+print(f"The AND of {x_binary} and {y_binary} is: {result}")
+
+def binary_or(x, y):
+    # Ensure the input strings are of the same length
+    max_len = max(len(x), len(y))
+    x = x.zfill(max_len)
+    y = y.zfill(max_len)
+
+    # Perform OR operation element-wise
+    result = ""
+    for i in range(max_len):
+        result += str(int(x[i]) | int(y[i]))
+    
+    return result
+
+# Example usage:
+x_binary = "1101"
+y_binary = "1010"
+result = binary_or(x_binary, y_binary)
+print(f"The OR of {x_binary} and {y_binary} is: {result}")
+
+how_many_places = 300
+sqrt_2_bin = ""
+for i in range(0,how_many_places):
+    numb = nth_digit_of_sqrt_n(i,2)
+    sqrt_2_bin += str(numb)
+
+sqrt_5_bin = ""
+sqrt_5_bin_list = []
+for i in range(0,how_many_places):
+    numb = nth_digit_of_sqrt_n(i,5)
+    sqrt_5_bin += str(numb)
+
+bin_xor_sqrt2_sqrt5 = binary_xor(sqrt_2_bin,sqrt_5_bin)
+print("XOR of sqrt2 and sqrt3: ", bin_xor_sqrt2_sqrt5)
+print()
+print("AND of sqrt2 and sqrt3: ", binary_and(sqrt_2_bin,sqrt_5_bin))
+print()
+print("OR of sqrt2 and sqrt3: ", binary_or(sqrt_2_bin,sqrt_5_bin))
+
+print("line 151:", int(bin_xor_sqrt2_sqrt5, 2) / (2 ** how_many_places))
 #################################################################################
 
 # the input boolean_fxn should be a dictionary in the form of 
@@ -182,7 +285,7 @@ def binary_tuple_to_decimal(binary_tuple):
 # Example usage:
 binary_input = (1, 1, 0)
 decimal_output = binary_tuple_to_decimal(binary_input)
-# print(decimal_output)
+print(decimal_output)
 
 def replace_zeros_with_minus_ones(binary_tuple):
     """
@@ -354,8 +457,8 @@ lists = sorted(sqrt2_dict.items()) # sorted by key, return a list of tuples
 
 x, y = zip(*lists) # unpack a list of pairs into two tuples
 
-plt.plot(x, y)
-plt.show()
+# plt.plot(x, y)
+# plt.show()
 # print(t_and_left_side_dict(boolean_function_fourier_coeffs(sqrt2_fxn_dict(12)),12))
 
 

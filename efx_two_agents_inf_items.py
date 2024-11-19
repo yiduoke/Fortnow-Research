@@ -139,6 +139,7 @@ def efx_allocation(n_iterations):
     print(f"{agent1.name} Items: {agent1.items}, Total Utility: {agent1.total_utility}")
     print(f"{agent2.name} Items: {agent2.items}, Total Utility: {agent2.total_utility}")
     print("-" * 50)
+  
 
   # Print the utility table at the end
   print("\nUtility Table:")
@@ -148,6 +149,19 @@ def efx_allocation(n_iterations):
   print(tabulate(table, headers=headers, tablefmt='pretty'))
 
   print(f"\nNumber of times we deferred: {num_deferred}")
-  print(f"Number of unallocated items: {n_iterations - len(allocated_items)}\n")
+  
+  # Check that the final allocation is EFX
+  assert efx_condition(agent1, agent2, item_utilities)
+
+  # Check that there are no unallocated items
+  assert len(allocated_items) == n_iterations
+
 # Run the allocation simulation
-efx_allocation(2000)
+efx_allocation(10)
+
+
+# 1st iteration: both agents receive same item (i.e. their most liked item is the
+# same item)
+
+# some later iteration: the agent that didn't receive the first item gets 0-value
+# item and the other agent gets a non-zero item

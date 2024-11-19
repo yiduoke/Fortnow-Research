@@ -83,6 +83,7 @@ result = insert_dot(input_string)
 print(f"String with dot inserted: {result}")
 
 
+
 def process_string(x):
     # Find the index of the dot
     dot_index = x.find('.')
@@ -122,23 +123,23 @@ def majority_sequence(until_x):
     for number in range(until_x):
         sequence_string += str(more_ones_than_zeros(binary_padding(number, num_digits)))
 
-    sequence_string = insert_dot(sequence_string)
+    sequence_string = insert_dot(sequence_string.lstrip('0'))
     decimal_form = floating_bin_to_dec(sequence_string)
     return sequence_string, decimal_form
 
-binary_sequence, dec_form = majority_sequence(2**8-1)
+binary_sequence, dec_form = majority_sequence(2**8)
 # print(binary_sequence)
 # print(dec_form)
 # print(floating_bin_to_dec(binary_sequence))
 
 def is_there_convergence(power_of_two):
     lst = []
-    for power in range(1, power_of_two):
+    for power in range(3, power_of_two):
         bin_form, dec_form = majority_sequence(2**power-1)
         lst.append(dec_form)
     return lst
 
-print(is_there_convergence(25))
+print(is_there_convergence(18))
 
 
 
