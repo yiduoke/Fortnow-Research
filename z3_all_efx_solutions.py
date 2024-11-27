@@ -21,17 +21,15 @@ print("Agent A2's utilities:", u_A2)
 # Simulate Turing machine outputs
 tm_A = sorted(items, key=lambda item: u_A1[item], reverse=True)  # TM A: decreasing utility for A1
 tm_B = sorted(items, key=lambda item: u_A2[item], reverse=True)  # TM B: decreasing utility for A2
+assert(len(tm_A) == len(tm_B))
 
 # Merge outputs from TM A and TM B, maintaining order
 revealed_items = []
-seen_items = set()
-for i in range(max(len(tm_A), len(tm_B))):
-  if i < len(tm_A) and tm_A[i] not in seen_items:
+for i in range(len(tm_A)):
+  if i < len(tm_A):
     revealed_items.append(tm_A[i])
-    seen_items.add(tm_A[i])
-  if i < len(tm_B) and tm_B[i] not in seen_items:
+  if i < len(tm_B):
     revealed_items.append(tm_B[i])
-    seen_items.add(tm_B[i])
 
 print("\nRevealed Item Order:", revealed_items)
 
@@ -44,7 +42,6 @@ solver = Solver()
 
 ### Not is for when item goes to Agent 2
 ### True is for when item goes to Agent 1
-
 
 # Compute utilities for each agent
 U_A1 = Sum([If(x[item], u_A1[item], 0) for item in items])
