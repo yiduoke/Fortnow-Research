@@ -9,7 +9,6 @@ random.seed(42)  # Seed for reproducibility
 items = [f"item_{i}" for i in range(num_items)]
 
 # Random utility functions for agents A1 and A2
-# u_A1 = {item: random.randint(1, 3) for item in items}  # Random utilities for A1
 u_A1 = {item: random.randint(1, 20) for item in items}
 # u_A2 = {item: random.randint(1, 20) for item in items}  # Random utilities for A2
 u_A2 = u_A1
@@ -93,9 +92,9 @@ while solver.check() == sat:
   for step, item in enumerate(revealed_items):
     # Update partial allocations
     if not(allocation[item]):
-        assigned_A1.append(item)
+      assigned_A1.append(item)
     else:
-        assigned_A2.append(item)
+      assigned_A2.append(item)
 
     # Compute partial utilities
     partial_U_A1 = sum(u_A1[i] for i in assigned_A1)
@@ -113,10 +112,10 @@ while solver.check() == sat:
         partial_EFX = False
         break
     for j in assigned_A2:
-        partial_U_A1_2_without_j = partial_U_A1_2 - u_A1[j]
-        if partial_U_A1 > partial_U_A1_2_without_j:
-          partial_EFX = False
-          break
+      partial_U_A1_2_without_j = partial_U_A1_2 - u_A1[j]
+      if partial_U_A1 > partial_U_A1_2_without_j:
+        partial_EFX = False
+        break
       
     # Print result for this step
     print(f"Step {step + 1}:")
