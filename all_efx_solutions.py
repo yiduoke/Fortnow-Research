@@ -101,16 +101,20 @@ while solver.check() == sat:
     partial_U_A1 = sum(u_A1[i] for i in assigned_A1)
     partial_U_A2 = sum(u_A2[i] for i in assigned_A2)
 
+    partial_U_A1_2 = sum(u_A1[i] for i in assigned_A2)
+    partial_U_A2_1 = sum(u_A2[i] for i in assigned_A1)
+
     # Check EFX for partial allocations
     partial_EFX = True
     for i in assigned_A1:
-      partial_U_A1_without_i = partial_U_A1 - u_A1[i]
-      if partial_U_A2 > partial_U_A1_without_i:
+      partial_U_A2_1_without_i = partial_U_A2_1 - u_A2[i]
+
+      if partial_U_A2 > partial_U_A2_1_without_i:
         partial_EFX = False
         break
     for j in assigned_A2:
-        partial_U_A2_without_j = partial_U_A2 - u_A2[j]
-        if partial_U_A1 > partial_U_A2_without_j:
+        partial_U_A1_2_without_j = partial_U_A1_2 - u_A1[j]
+        if partial_U_A1 > partial_U_A1_2_without_j:
           partial_EFX = False
           break
       
