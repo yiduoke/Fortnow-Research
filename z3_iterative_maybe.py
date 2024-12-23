@@ -86,33 +86,7 @@ for step in range(len(revealed_items)):
     valid_allocations = current_allocations
 
   solver.pop()
-
-  # Print valid allocations with utility values
-  # for idx, sol in enumerate(valid_allocations, 1):
-
-  #   # print("sol: ", sol)
-  #   A1_items = [item for item in sol if sol[item]]
-  #   A2_items = [item for item in sol if not sol[item]]
-  #   A1_utility = sum(u_A1[item] for item in A1_items)
-  #   A2_utility = sum(u_A2[item] for item in A2_items)
-  #   A1_utility_on_A2_bundle = sum(u_A1[item] for item in A2_items)
-  #   A2_utility_on_A1_bundle = sum(u_A2[item] for item in A1_items)
-
-  #   print(f"\nAllocation {idx}:")
-
-  #   print(f"  Agent A1 gets (item, u_1, u_21): {[(A1_item, u_A1[A1_item], u_A2[A1_item]) for A1_item in A1_items]} (Utility: {A1_utility}, Utility on A2's bundle: {A1_utility_on_A2_bundle})")
-  #   print(f"  Agent A2 gets (item, u_2, u_1): {[(A2_item, u_A2[A2_item], u_A1[A2_item]) for A2_item in A2_items]}  (Utility: {A2_utility}, Utility on A1's bundle: {A2_utility_on_A1_bundle})")
-
-# Final results
-# print("\nFinal valid allocations:")
-# for idx, sol in enumerate(valid_allocations, 1):
-#   A1_items = [item for item, allocated_to_A1 in sol.items() if allocated_to_A1]
-#   A2_items = [item for item in sol if item not in A1_items]
-#   A1_utility = sum(u_A1[item] for item in A1_items)
-#   A2_utility = sum(u_A2[item] for item in A2_items)
-#   print(f"\nFinal Allocation {idx}:")
-#   print(f"  Agent A1 gets: {A1_items} (Utility: {A1_utility})")
-#   print(f"  Agent A2 gets: {A2_items} (Utility: {A2_utility})")
+  
 
 
 def generate_excel(valid_allocations, revealed_items, u_A1, u_A2, filename="allocations.xlsx"):
