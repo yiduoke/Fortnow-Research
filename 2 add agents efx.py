@@ -2,6 +2,7 @@ import pandas as pd
 import sys
 import contextlib
 import io
+from tabulate import tabulate
 
 
 def generate_release_order(df):
@@ -148,20 +149,22 @@ def efx_allocation(df):
         "u1(A2)": A1_envy_values,
         "u2(A2)": A2_total_values,
         "u2(A1)": A2_envy_values,
-        "A1's least in A2": A1_least_fav_in_A2,
-        "A2's least in A1": A2_least_fav_in_A1
+        "u1(A2) least": A1_least_fav_in_A2,
+        "u2(A1) least": A2_least_fav_in_A1
     })
 
     return df_efx_allocation
 
-# Example usage
+
 df = pd.DataFrame({
-    "Item": ["g6", "g3", "g2", "g5", "g9", "g10", "g1", "g4", "g7", "g8"],
-    "A1 Value": [19, 18, 1, 17, 12, 6, 9, 2, 3, 8],  # Alice's values
-    "A2 Value": [19, 17, 18, 2, 1, 11, 9, 14, 7, 5]   # Bob's values
+    "Item": ["g1", "g2", "g3", "g4", "g5", "g6", "g7", "g8", "g9", "g10"],
+    "A1 Value": [9, 1, 18, 2, 17, 19, 3, 8, 12, 6],  # Alice's values
+    "A2 Value": [9, 18, 17, 14, 2, 19, 7, 5, 1, 11]  # Bob's values
 })
+
 
 df_final = efx_allocation(df)
 
-# Display the result
-print(df_final)
+print(tabulate(df_final, headers='keys', tablefmt='psql'))
+
+
